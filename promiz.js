@@ -7,7 +7,7 @@
 
   if (!global.setImmediate)
     global.addEventListener('message', function (e) {
-      if (e.source == global){
+      if (e.source == global) {
         if (isRunningTask)
           nextTick(queue[e.data])
         else {
@@ -22,6 +22,10 @@
       }
     })
 
+  /**
+   * 异步执行方法
+   * @param {function} fn 需要执行的回调函数
+   */
   function nextTick(fn) {
     if (global.setImmediate) setImmediate(fn)
     // if inside of web worker
@@ -41,7 +45,7 @@
       return value
 
     return new Deferred(function (resolve) {
-        resolve(value)
+      resolve(value)
     })
   }
 
@@ -50,7 +54,7 @@
       throw TypeError()
 
     return new Deferred(function (resolve, reject) {
-        reject(value)
+      reject(value)
     })
   }
 
@@ -76,7 +80,7 @@
         return cnt
       }, 0)
 
-      if(unresolved == 0)
+      if (unresolved == 0)
         d.resolve(arr)
 
       arr.map(function (v, i) {
@@ -119,7 +123,7 @@
         return cnt
       }, 0)
 
-      if(unresolved == 0)
+      if (unresolved == 0)
         d.resolve(arr)
 
       arr.map(function (v, i) {
@@ -156,9 +160,9 @@
     // 3: resolved
     // 4: rejected
     var self = this,
-      state = 0,
-      val = 0,
-      next = [],
+      state = 0, // promise状态
+      val = 0, // success callback返回值
+      next = [], // 返回的新的promise对象
       fn, er;
 
     self['promise'] = self
@@ -233,7 +237,7 @@
 
     // ref : reference to 'then' function
     // cb, ec, cn : successCallback, failureCallback, notThennableCallback
-    function thennable (ref, cb, ec, cn) {
+    function thennable(ref, cb, ec, cn) {
       // Promises can be rejected with other promises, which should pass through
       if (state == 2) {
         return cn()
@@ -298,10 +302,10 @@
           val = TypeError()
           finish()
         } else thennable(ref, function () {
-            finish(3)
-          }, finish, function () {
-            finish(state == 1 && 3)
-          })
+          finish(3)
+        }, finish, function () {
+          finish(state == 1 && 3)
+        })
 
       })
     }
